@@ -107,11 +107,11 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
     cpu: 100m
-    memory: 1Gi
+    memory: 5Gi
     amd.com/gpu: 1
   requests:
     cpu: 100m
-    memory: 1Gi
+    memory: 5Gi
     amd.com/gpu: 1
 
 nodeSelector: {}
