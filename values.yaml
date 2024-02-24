@@ -40,21 +40,26 @@ service:
   # externalTrafficPolicy: Cluster
 
 ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  enabled: true
+  ingressClassName: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    external-dns.alpha.kubernetes.io/hostname: jellyfin.palacpl.us
+    external-dns.alpha.kubernetes.io/ttl: "120" #optional
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
   path: /
   hosts:
-    - chart-example.local
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+    - jellyfin.palacpl.us
+  tls:
+    - secretName: secure-tls
+      hosts:
+        - jellyfin.palacpl.us
 
 persistence:
   config:
-    enabled: false
+    enabled: true
     ## jellyfin configuration data Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -71,7 +76,7 @@ persistence:
     accessMode: ReadWriteOnce
     size: 1Gi
   media:
-    enabled: false
+    enabled: true
     ## Directory where media is persisted
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -83,11 +88,11 @@ persistence:
     ##
     ## If you want to reuse an existing claim, you can pass the name of the PVC using
     ## the existingClaim variable
-    # existingClaim: your-claim
-    # subPath: some-subpath
-    accessMode: ReadWriteOnce
-    size: 10Gi
-  extraExistingClaimMounts: []
+    existingClaim: plex-pvc
+    subPath: media
+    accessMode: ReadWriteMany
+  extraExistingClaimMounts:
+    []
     # - name: external-mount
     #   mountPath: /srv/external-mount
     ## A manually managed Persistent Volume and Claim
@@ -95,17 +100,19 @@ persistence:
     #   existingClaim:
     #   readOnly: true
 
-resources: {}
+resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+    amd.com/gpu: 1
+  requests:
+    cpu: 100m
+    memory: 128Mi
+    amd.com/gpu: 1
 
 nodeSelector: {}
 
@@ -113,12 +120,13 @@ tolerations: []
 
 affinity: {}
 
-extraVolumes: []
+extraVolumes:
+  []
   #- name: renderD129
   #  hostPath:
   #    path: /dev/dri/renderD129
 
-extraVolumeMounts: []
+extraVolumeMounts:
+  []
   #- mountPath: /dev/dri/renderD129
   #  name: renderD129
-
