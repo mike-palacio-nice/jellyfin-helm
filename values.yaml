@@ -20,8 +20,8 @@ enableDLNA: false
 
 # Set extra environment variables
 extraEnv:
-  JELLYFIN_FFMPEG__probesize: 50000000
-  JELLYFIN_FFMPEG__analyzeduration: 50000000
+  JELLYFIN_FFMPEG__probesize: 100000000
+  JELLYFIN_FFMPEG__analyzeduration: 100000000
 
 service:
   type: ClusterIP
