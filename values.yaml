@@ -121,10 +121,12 @@ tolerations: []
 affinity: {}
 
 extraVolumes:
-  - name: renderD128
-    hostPath:
-      path: /dev/dri/renderD128
+  []
+  # - name: renderD128
+  #   hostPath:
+  #     path: /dev/dri/renderD128
 
 extraVolumeMounts:
-  - mountPath: /dev/dri/renderD128
-    name: renderD128
+  []
+  # - mountPath: /dev/dri/renderD128
+  #   name: renderD128
