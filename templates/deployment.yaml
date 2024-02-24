@@ -38,6 +38,10 @@ spec:
               hostPort: 1900
               protocol: UDP
           {{- end }}
+          env:
+          {{- with .Values.extraEnv }}
+              {{- get (fromYaml (include "env_vars" $)) "env" | toYaml | nindent 10  -}}
+          {{- end }}
           livenessProbe:
             tcpSocket:
               port: http

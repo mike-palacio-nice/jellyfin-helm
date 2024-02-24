@@ -18,6 +18,11 @@ fullnameOverride: ""
 # https://jellyfin.org/docs/general/networking/dlna.html
 enableDLNA: false
 
+# Set extra environment variables
+extraEnv:
+  JELLYFIN_FFMPEG__probesize: 50000000
+  JELLYFIN_FFMPEG__analyzeduration: 50000000
+
 service:
   type: ClusterIP
   port: 8096
